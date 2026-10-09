@@ -264,7 +264,7 @@ src/main/resources/
 
 The repository also includes the Visual Paradigm project used to model the system. It is provided as a design reference for reviewers and is **not required** to compile or run the application.
 
-- **Model file:** [`Visual Paradigm/Progetto Hack-Hub.vpp`](<Visual%20Paradigm/Progetto%20Hack-Hub.vpp>)
+- **Model file:** [`Visual Paradigm/Progetto Hack-Hub.vpp`](<Visual%20Paradigm/HackHub.vpp>)
 - **Tool:** Visual Paradigm
 - **Purpose:** provides the UML design artifacts associated with the HackHub implementation.
 
