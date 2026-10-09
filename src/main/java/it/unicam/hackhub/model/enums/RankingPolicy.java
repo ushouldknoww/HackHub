@@ -1,0 +1,7 @@
+package it.unicam.hackhub.model.enums;
+
+public enum RankingPolicy {
+    SCORE_DESC_THEN_EARLIEST_SUBMISSION,
+    SCORE_DESC_THEN_TEAM_REGISTRATION_ORDER,
+    SCORE_DESC_THEN_MINOR_TEAM_SIZE_THEN_EARLIEST_SUBMISSION
+}

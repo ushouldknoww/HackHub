@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10121d">
+  <meta name="description" content="Discover hackathons, build teams and turn ideas into working projects with HackHub.">
+  <title>HackHub — Build something that matters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="HackHub home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span>hack<span class="brand-accent">hub</span></span>
+      </a>
+      <nav class="top-nav" aria-label="Main navigation">
+        <a href="#discover">Discover</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="/swagger-ui.html" target="_blank" rel="noopener">API docs <span aria-hidden="true">↗</span></a>
+      </nav>
+      <div class="account-actions" id="account-actions">
+        <button class="button button-quiet" id="open-login">Sign in</button>
+        <button class="button button-primary button-small" id="open-register">Create account <span aria-hidden="true">↗</span></button>
+      </div>
+      <div class="account-signed-in hidden" id="account-signed-in">
+        <span class="signed-in-dot"></span><span id="signed-in-name">Signed in</span>
+        <button class="button button-quiet button-small" id="sign-out">Sign out</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> THE PLACE WHERE IDEAS SHIP</div>
+          <h1 id="hero-title">Build something<br><span class="accent-text">that matters.</span></h1>
+          <p class="hero-lede">Find your next hackathon. Bring the right people together. Turn a weekend of ideas into something real.</p>
+          <div class="hero-actions">
+            <a class="button button-primary button-large" href="#discover">Explore hackathons <span aria-hidden="true">↓</span></a>
+            <button class="button button-outline button-large" id="hero-register">Join the community</button>
+          </div>
+          <div class="hero-proof"><span class="proof-orbit"><span></span><span></span><span></span></span><span>Discover. Collaborate. Deliver.</span></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+          <div class="art-cross cross-a">+</div><div class="art-cross cross-b">+</div><div class="art-cross cross-c">+</div>
+          <div class="art-card art-card-main">
+            <div class="art-card-top"><span class="live-dot"></span><span>BUILD MODE</span><span class="mono">001 / 024</span></div>
+            <div class="art-glyph"><span class="glyph-ring"></span><span class="glyph-core">H</span><span class="glyph-ray ray-a"></span><span class="glyph-ray ray-b"></span></div>
+            <div class="art-card-foot"><strong>Big ideas,</strong><strong class="accent-text">small teams.</strong></div>
+          </div>
+          <div class="float-tag tag-ideas"><span class="tag-icon">✳</span><span><b>Make it real</b><small>One idea at a time</small></span></div>
+          <div class="float-tag tag-build"><span class="tag-bars"><i></i><i></i><i></i></span><span><b>Ship together</b><small>Not just another deck</small></span></div>
+          <div class="art-grid"></div>
+        </div>
+        <div class="hero-bottomline"><span>YOUR NEXT CHAPTER STARTS HERE</span><span class="mono">SCROLL TO EXPLORE&nbsp; ↓</span></div>
+      </section>
+
+      <section class="discover section" id="discover" aria-labelledby="discover-title">
+        <div class="section-heading">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span> FIND YOUR NEXT CHALLENGE</div><h2 id="discover-title">Explore <span class="accent-text">hackathons.</span></h2></div>
+          <div class="heading-aside"><span class="tiny-status-dot"></span><span>LIVE FROM THE HUB</span></div>
+        </div>
+        <form class="filter-bar" id="search-form">
+          <label class="search-field"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">Search hackathons</span><input id="filter-name" type="search" placeholder="Search by name or theme…" autocomplete="off"></label>
+          <label class="filter-field"><span>Status</span><select id="filter-status"><option value="">All statuses</option><option value="IN_REGISTRATION">Registration</option><option value="RUNNING">In progress</option><option value="IN_EVALUATION">Evaluation</option><option value="CLOSED">Closed</option></select></label>
+          <label class="filter-field"><span>Format</span><select id="filter-online"><option value="">All formats</option><option value="true">Online</option><option value="false">In person</option></select></label>
+          <button class="button button-primary search-submit" type="submit">Search <span aria-hidden="true">↗</span></button>
+        </form>
+        <div class="date-filters">
+          <label>Starts after <input type="date" id="filter-after"></label>
+          <label>Starts before <input type="date" id="filter-before"></label>
+          <button class="text-button" type="button" id="clear-filters">Clear filters <span aria-hidden="true">×</span></button>
+          <div class="result-count" id="result-count">Loading opportunities…</div>
+        </div>
+        <div class="notice hidden" id="api-notice" role="status"></div>
+        <div class="hackathon-grid" id="hackathon-grid" aria-live="polite" aria-busy="true"></div>
+        <div class="empty-state hidden" id="empty-state"><span class="empty-symbol">⌁</span><h3>No matches. Yet.</h3><p>Try a broader search or clear the filters to see what’s out there.</p></div>
+        <div class="pagination"><button class="button button-outline button-small" id="previous-page" disabled>← Previous</button><span id="page-indicator">Page 1</span><button class="button button-outline button-small" id="next-page" disabled>Next →</button></div>
+      </section>
+
+      <section class="workflow section" id="how-it-works" aria-labelledby="workflow-title">
+        <div class="workflow-intro"><div class="eyebrow"><span class="eyebrow-line"></span> FROM IDEA TO IMPACT</div><h2 id="workflow-title">A better way to<br><span class="accent-text">build together.</span></h2><p>Great projects aren't built in isolation. HackHub puts the moving parts in one place so teams can focus on the work.</p><a class="text-link" href="/swagger-ui.html">Explore the API <span aria-hidden="true">↗</span></a></div>
+        <div class="workflow-steps">
+          <article class="workflow-step"><span class="step-number">01</span><div class="step-icon icon-discover">⌕</div><div><h3>Discover</h3><p>Find challenges by topic, format and schedule. Get the details before you commit.</p></div><span class="step-arrow" aria-hidden="true">↗</span></article>
+          <article class="workflow-step"><span class="step-number">02</span><div class="step-icon icon-team">⌘</div><div><h3>Team up</h3><p>Create a team, invite collaborators and keep coordination in one place.</p></div><span class="step-arrow" aria-hidden="true">↗</span></article>
+          <article class="workflow-step"><span class="step-number">03</span><div class="step-icon icon-ship">⤴</div><div><h3>Deliver</h3><p>Submit your work, get evaluated and see the final ranking when results are closed.</p></div><span class="step-arrow" aria-hidden="true">↗</span></article>
+        </div>
+      </section>
+
+      <section class="bottom-cta">
+        <div class="cta-orb" aria-hidden="true"></div><div class="cta-copy"><div class="eyebrow"><span class="eyebrow-line"></span> YOUR PEOPLE ARE OUT THERE</div><h2>Make the next<br><span class="accent-text">thing happen.</span></h2></div><div class="cta-action"><p>Start with a challenge. Find your people. See what you can make.</p><button class="button button-primary button-large" id="bottom-register">Get started <span aria-hidden="true">↗</span></button></div>
+      </section>
+    </main>
+    <footer class="footer"><a class="brand brand-footer" href="/"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span><span>hack<span class="brand-accent">hub</span></span></a><span>Built for people who make things.</span><div><a href="/swagger-ui.html">API documentation ↗</a><span class="footer-divider">/</span><span class="mono">HACKHUB v1.0</span></div></footer>
+  </div>
+
+  <dialog class="detail-dialog" id="detail-dialog" aria-labelledby="detail-title">
+    <div class="dialog-top"><span class="eyebrow"><span class="eyebrow-line"></span> HACKATHON DETAILS</span><button class="icon-button" id="close-detail" aria-label="Close details">×</button></div>
+    <div id="detail-content"></div>
+  </dialog>
+
+  <dialog class="auth-dialog" id="auth-dialog" aria-labelledby="auth-title">
+    <div class="dialog-top"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span><span>hack<span class="brand-accent">hub</span></span></a><button class="icon-button" id="close-auth" aria-label="Close account window">×</button></div>
+    <div class="auth-tabs" role="tablist" aria-label="Account action"><button id="tab-login" class="auth-tab active" role="tab" aria-selected="true">Sign in</button><button id="tab-register" class="auth-tab" role="tab" aria-selected="false">Create account</button></div>
+    <h2 id="auth-title">Welcome <span class="accent-text">back.</span></h2><p class="auth-description" id="auth-description">Sign in and pick up where your team left off.</p>
+    <div class="form-error hidden" id="auth-error" role="alert"></div>
+    <form id="login-form" class="auth-form">
+      <label>Username<input name="username" type="text" required autocomplete="username" placeholder="alexbuilds"></label>
+      <label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="At least 12 characters"></label>
+      <button class="button button-primary button-large form-submit" type="submit">Sign in <span aria-hidden="true">↗</span></button>
+    </form>
+    <form id="register-form" class="auth-form hidden">
+      <div class="form-row"><label>First name<input name="name" required maxlength="80" autocomplete="given-name" placeholder="Alex"></label><label>Last name<input name="surname" required maxlength="80" autocomplete="family-name" placeholder="Morgan"></label></div>
+      <label>Username<input name="username" required minlength="3" maxlength="50" autocomplete="username" placeholder="alexbuilds"></label>
+      <label>Email<input name="email" type="email" required maxlength="254" autocomplete="email" placeholder="you@example.com"></label>
+      <label>Password<input name="password" type="password" required minlength="12" maxlength="72" autocomplete="new-password" placeholder="At least 12 characters"></label>
+      <p class="field-hint">Use 12–72 characters. This demo accepts accounts without email verification.</p>
+      <button class="button button-primary button-large form-submit" type="submit">Create participant account <span aria-hidden="true">↗</span></button>
+    </form>
+    <p class="auth-footnote">By continuing, you agree to use HackHub responsibly. <a href="/swagger-ui.html">API documentation</a></p>
+  </dialog>
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

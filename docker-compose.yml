@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: hackhub-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-hackhub}
+      POSTGRES_USER: ${POSTGRES_USER:-hackhub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-local-password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - hackhub-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hackhub} -d ${POSTGRES_DB:-hackhub}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    container_name: hackhub-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      TZ: Europe/Rome
+      PORT: 8080
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-hackhub}
+      DB_USERNAME: ${POSTGRES_USER:-hackhub}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-change-this-local-password}
+      JWT_SECRET: ${JWT_SECRET:?Copy .env.example to .env and set JWT_SECRET}
+      JWT_EXPIRATION_SECONDS: ${JWT_EXPIRATION_SECONDS:-3600}
+      HACKHUB_STAFF_REGISTRATION_KEY: ${HACKHUB_STAFF_REGISTRATION_KEY:-}
+      HACKHUB_MAIL_FROM: ${HACKHUB_MAIL_FROM:-}
+      SPRING_MAIL_HOST: ${SPRING_MAIL_HOST:-}
+      SPRING_MAIL_PORT: ${SPRING_MAIL_PORT:-587}
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME:-}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD:-}
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: ${SPRING_MAIL_SMTP_AUTH:-true}
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: ${SPRING_MAIL_SMTP_STARTTLS:-true}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+
+volumes:
+  hackhub-postgres-data:
